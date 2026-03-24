@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+const https = require('https');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const models = require('./models');
@@ -92,4 +93,16 @@ createRoutes(models.QuizQuestion, 'quiz-questions');
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  
+  // Self-ping to keep Render alive (Free Tier)
+  const externalUrl = process.env.RENDER_EXTERNAL_URL;
+  if (externalUrl) {
+    setInterval(() => {
+      https.get(externalUrl, (res) => {
+        console.log(`Self-ping successful: ${res.statusCode}`);
+      }).on('error', (err) => {
+        console.error(`Self-ping failed: ${err.message}`);
+      });
+    }, 14 * 60 * 1000); // Ping every 14 minutes
+  }
 });
