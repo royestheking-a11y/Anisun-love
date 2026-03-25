@@ -127,9 +127,9 @@ export const Gallery = () => {
         </motion.div>
 
         {/* Gallery Grid (Polaroid Style) */}
-        <motion.div layout className="min-h-[50vh]">
-          <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1024: 3 }}>
-            <Masonry gutter="3rem">
+        <div className="min-h-[50vh]">
+          <ResponsiveMasonry columnsCountBreakPoints={{ 300: 1, 700: 2, 1100: 3 }}>
+            <Masonry gutter="2rem">
               <AnimatePresence>
                 {filteredImages.map((img, index) => {
                   const randomRotation = index % 2 === 0 ? "rotate-[-2deg]" : "rotate-[2deg]";
@@ -158,18 +158,20 @@ export const Gallery = () => {
                       </div>
                       
                       {/* Handwriting Caption Area */}
-                      <div className="absolute bottom-4 left-0 w-full text-center px-4 flex justify-between items-center">
-                        <span className="font-serif text-xl text-[#4B2E2E] italic truncate pr-2">{img.category}</span>
-                        <div className="flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                      <div className="absolute bottom-3 left-0 w-full px-4 flex justify-between items-center bg-white/80 backdrop-blur-sm py-1">
+                        <span className="font-serif text-lg text-[#4B2E2E] italic truncate pr-2 max-w-[60%]">{img.category}</span>
+                        <div className="flex gap-1.5 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                           <button
                             onClick={(e) => { e.stopPropagation(); handleDownload(img.url); }}
-                            className="p-2 text-[#8B5E3C] hover:text-[#C9A227] transition-colors"
+                            className="p-1.5 text-[#8B5E3C] hover:text-[#C9A227] transition-all hover:scale-110 active:scale-90"
+                            title="Download Memory"
                           >
                             <Download size={18} />
                           </button>
                           <button
                             onClick={(e) => { e.stopPropagation(); if(img._id) deleteGalleryImage(img._id); }}
-                            className="p-2 text-[#8B5E3C] hover:text-red-500 transition-colors"
+                            className="p-1.5 text-[#8B5E3C] hover:text-red-500 transition-all hover:scale-110 active:scale-90"
+                            title="Delete Memory"
                           >
                             <Trash2 size={18} />
                           </button>
@@ -184,7 +186,7 @@ export const Gallery = () => {
               </AnimatePresence>
             </Masonry>
           </ResponsiveMasonry>
-        </motion.div>
+        </div>
 
         {filteredImages.length === 0 && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-32">
